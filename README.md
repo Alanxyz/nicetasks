@@ -28,7 +28,7 @@ $ nt a
 
 Para completar una tarea utilice `nt x`, a continuación la seleccionara con fzf.
 
-Puede usar markdown al introducir la tarea. Es útil utilizar linos para enlazar
+Puede usar markdown al introducir la tarea. Es útil utilizar links para enlazar
 la tarea a alguna otra nota. Puesto que NiceTasks solo detecta como tareas las
 listas que comiencen con `- [ ]`, puede usar `+ [ ]` para tareas que no quiera
 que sean analizadas. Útil para tareas a largo plazo que no tenga fecha definida
@@ -68,6 +68,7 @@ Un archivo de tareas debería terminar teniendo la siguiente apariencia.
 | `nt x`  | Marca como "completada" la tarea seleccionada      |
 | `nt f`  | Muestra las tareas completadas                     |
 | `nt c`  | Limpia las tareas completadas del archivo de texto |
+| `nt e`  | Abre el archivo de tareas con el editor Vim        |
 
 ## Por hacer
 
