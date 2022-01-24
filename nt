@@ -1,0 +1,48 @@
+#!/bin/sh
+
+TASKS_FILE=~/Notas/Tareas.md
+EDITOR=vim
+DATE_FORMAT=+%y-%m-%d
+
+if [ $# = 0 ]; then 
+  echo ---
+  grep "\- \[ \] " "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | sort
+  echo ---
+
+elif [ $1 = f ]; then
+  echo ---
+  grep "\- \[x\]" "$TASKS_FILE" | sed -e 's,^.*\- ,,g'
+  echo ---
+
+elif [ $1 = d ]; then
+  echo ---
+  grep "\- \[ \] " "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | grep `date $DATE_FORMAT` | sort
+  echo ---
+
+elif [ $1 = n ]; then
+  grep "\- \[ \] " "$TASKS_FILE" | sed -e 's,^.*\- \[ \] ,,g' | sort | head -1
+
+elif [ $1 = a ]; then
+  read -p '>> ' TASK
+  read -p '>> ' DATESTRING
+
+  DATE=`date -d "$DATESTRING" $DATE_FORMAT`
+
+  echo "- [ ] ($DATE) $TASK" >> $TASKS_FILE
+  echo "Added: ($DATE) $TASK"
+
+elif [ $1 = x ]; then
+  LINE=`grep "\- \[ \]" "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | fzf`
+  X_LINE=`echo $LINE | sed -e 's,\[ \],\[x\],g'`
+  LINE=`echo $LINE | sed -e 's,\[,\\\[,g' -e 's,\],\\\],g' -e 's,\-,\\\-,g'`
+  X_LINE=`echo $X_LINE | sed -e 's,\[,\\\[,g' -e 's,\],\\\],g' -e 's,\-,\\\-,g'`
+
+  sed -i "s,$LINE,$X_LINE,g" $TASKS_FILE
+
+elif [ $1 = c ]; then 
+  sed -i '/^.*\- \[x\]/d' $TASKS_FILE
+
+elif [ $1 = e ]; then 
+  $EDITOR $TASKS_FILE
+
+fi
