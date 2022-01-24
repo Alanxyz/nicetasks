@@ -1,17 +1,18 @@
 #!/bin/sh
 
 TASKS_FILE=~/Notas/Tareas.md
+MAX_TASKS=10
 EDITOR=vim
 DATE_FORMAT=+%y-%m-%d
 
 if [ $# = 0 ]; then 
   echo ---
-  grep "\- \[ \] " "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | sort
+  grep "\- \[ \] " "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | sort | head -$MAX_TASKS
   echo ---
 
 elif [ $1 = f ]; then
   echo ---
-  grep "\- \[x\]" "$TASKS_FILE" | sed -e 's,^.*\- ,,g'
+  grep "\- \[x\]" "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | sort
   echo ---
 
 elif [ $1 = d ]; then
