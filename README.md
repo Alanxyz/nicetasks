@@ -63,6 +63,7 @@ Un archivo de tareas debería terminar teniendo la siguiente apariencia.
 |---------|----------------------------------------------------|
 | `nt`    | Muestra las tareas pendientes ordenadas            |
 | `nt d`  | Muestra las tareas pendientes del día de hoy       |
+| `nt q`  | Muestra las tareas pendientes del día especificado |
 | `nt n`  | Muestra la tarea pendiente más próxima             |
 | `nt a`  | Pide al usuario introducir una tarea nueva         |
 | `nt x`  | Marca como "completada" la tarea seleccionada      |

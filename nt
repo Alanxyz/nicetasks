@@ -20,6 +20,14 @@ elif [ $1 = d ]; then
   grep "\- \[ \] " "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | grep `date $DATE_FORMAT` | sort
   echo ---
 
+elif [ $1 = q ]; then
+  read -p '>> ' DATESTRING
+  DATE=`date -d "$DATESTRING" $DATE_FORMAT`
+
+  echo ---
+  grep "\- \[ \] ($DATE) " "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | grep `date $DATE_FORMAT` | sort
+  echo ---
+
 elif [ $1 = n ]; then
   grep "\- \[ \] " "$TASKS_FILE" | sed -e 's,^.*\- \[ \] ,,g' | sort | head -1
 
