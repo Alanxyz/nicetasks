@@ -17,7 +17,8 @@ elif [ $1 = f ]; then
 
 elif [ $1 = d ]; then
   echo ---
-  grep "\- \[ \] " "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | grep `date $DATE_FORMAT` | sort
+  DATE=`date $DATE_FORMAT`
+  grep "\- \[ \] ($DATE) " "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | sort
   echo ---
 
 elif [ $1 = q ]; then
@@ -25,7 +26,7 @@ elif [ $1 = q ]; then
   DATE=`date -d "$DATESTRING" $DATE_FORMAT`
 
   echo ---
-  grep "\- \[ \] ($DATE) " "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | grep `date $DATE_FORMAT` | sort
+  grep "\- \[ \] ($DATE) " "$TASKS_FILE" | sed -e 's,^.*\- ,,g' | sort
   echo ---
 
 elif [ $1 = n ]; then
