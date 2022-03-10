@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TASKS_FILE=~/Notas/Tareas.md
+TASKS_FILE=~/Documents/Notes/Tareas.md
 MAX_TASKS=10
 EDITOR=vim
 DATE_FORMAT=+%y-%m-%d
