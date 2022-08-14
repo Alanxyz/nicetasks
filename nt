@@ -5,32 +5,31 @@ MAX_TASKS=10
 EDITOR=vim
 DATE_FORMAT=+%y-%m-%d
 
+NOW=`date +%s`
+
+natural2date() {
+  DATESTRING=`echo $1 | grep -oP "\(.*\)" | sed 's/(\(.*\))/\1/'`
+
+  if [ ! -z "$DATESTRING" ]; then
+    DATE=`date -d "$DATESTRING" $DATE_FORMAT`
+    REST=`echo $1 | sed 's/(.*)//'`
+
+    DATE="\e[0;32m$DATE\e[0m"
+
+    echo $DATE $REST 
+  fi
+}
+
 if [ $# = 0 ]; then 
   echo ---
-  grep "\* \[ \] " "$TASKS_FILE" | sed -e 's,^.*\* ,,g' | sort | head -$MAX_TASKS
-  echo ---
 
-elif [ $1 = f ]; then
-  echo ---
-  grep "\* \[x\]" "$TASKS_FILE" | sed -e 's,^.*\* ,,g' | sort
-  echo ---
-
-elif [ $1 = d ]; then
-  echo ---
-  DATE=`date $DATE_FORMAT`
-  grep "\* \[ \] ($DATE) " "$TASKS_FILE" | sed -e 's,^.*\* ,,g' | sort
-  echo ---
-
-elif [ $1 = q ]; then
-  read -p '>> ' DATESTRING
-  DATE=`date -d "$DATESTRING" $DATE_FORMAT`
+  grep "\* \[ \] " "$TASKS_FILE" \
+    | sed 's,^.*\* \[ \],,g' \
+    | while read -r line ; do
+        natural2date "$line"
+      done | sort
 
   echo ---
-  grep "\* \[ \] ($DATE) " "$TASKS_FILE" | sed -e 's,^.*\* ,,g' | sort
-  echo ---
-
-elif [ $1 = n ]; then
-  grep "\* \[ \] " "$TASKS_FILE" | sed -e 's,^.*\* \[ \] ,,g' | sort | head -1
 
 elif [ $1 = a ]; then
   read -p '>> ' TASK
@@ -38,19 +37,11 @@ elif [ $1 = a ]; then
 
   DATE=`date -d "$DATESTRING" $DATE_FORMAT`
 
-  echo "* [ ] ($DATE) $TASK" >> $TASKS_FILE
-  echo "Added: ($DATE) $TASK"
-
-elif [ $1 = x ]; then
-  LINE=`grep "\* \[ \]" "$TASKS_FILE" | sed -e 's,^.*\* ,,g' | fzf`
-  X_LINE=`echo $LINE | sed -e 's,\[ \],\[x\],g'`
-  LINE=`echo $LINE | sed -e 's,\[,\\\[,g' -e 's,\],\\\],g' -e 's,\*,\\\*,g'`
-  X_LINE=`echo $X_LINE | sed -e 's,\[,\\\[,g' -e 's,\],\\\],g' -e 's,\*,\\\*,g'`
-
-  sed -i "s,$LINE,$X_LINE,g" $TASKS_FILE
+  echo "* [ ] $TASK ($DATE)" >> $TASKS_FILE
+  echo "Added $TASK ($DATE)"
 
 elif [ $1 = c ]; then 
-  sed -i '/^.*\* \[x\]/d' $TASKS_FILE
+  sed -i '/^.*\* \[X\]/d' $TASKS_FILE
 
 elif [ $1 = e ]; then 
   $EDITOR $TASKS_FILE
